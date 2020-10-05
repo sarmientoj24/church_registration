@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load static %}
+{% block page_content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+            <div class="row">
+                <div class="holder">
+                    <div class="box-set">
+                        <div class="box-set__knight">
+                            <img class="box-set__knight-image" src="{% static 'assets/logo.png' %}" alt="logo" />
+                        </div>
+                        <div class="box-set__header">
+                            <h1>Contact Tracing Form
+                                <span>Calumpit Christian Baptist Church</span>
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="mt-2 mb-2" />
+            {% if messages %}
+                {% for message in messages %}
+                <p class="font-weight-bold" class="text-{{ message.level_tag }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+            <form action="{% url 'register' %}" id="register" method="POST" 
+                enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+                <div class="form-group validate-me">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" required>
+                    <div class="valid-feedback"></div>
+                    <div class="invalid-feedback">Please fill out this field.</div>
+                </div>
+                <div class="form-group validate-me">
+                    <label for="temp">Temperature (e.g. 36.5, only from 32 to 45):</label>
+                    <input type="number" min=32 max=45 step="0.1" class="form-control" id="temp" placeholder="Enter temp" name="temp" required>
+                    <div class="valid-feedback"></div>
+                    <div class="invalid-feedback">Get proper temp from usher!</div>
+                </div>
+                <div class="form-group">
+                    <label for="contact">Contact Number (maximum 11-digit):</label>
+                    <input type="text" class="form-control" id="contact" placeholder="Enter contact number" name="contact">
+                </div>
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <input type="text" class="form-control" id="address" placeholder="Enter address" name="address">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Disable form submissions if there are invalid fields
+    (function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+
+        // Get all form-groups in need of validation
+        var validateGroup = document.getElementsByClassName('validate-me');
+
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function (form) {
+            form.addEventListener('submit', function (event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                //Added validation class to all form-groups in need of validation
+                for (var i = 0; i < validateGroup.length; i++) {
+                    validateGroup[i].classList.add('was-validated');
+                }
+            }, false);
+        });
+        }, false);
+    })();
+    </script>
+{% endblock %}
