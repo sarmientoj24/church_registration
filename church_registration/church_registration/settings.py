@@ -21,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'n(@8ocz(^cc&qqy*_fm7ofd*ec#$hwa12ercl5=0mb=#_=$zym'
+SECRET_KEY = str(os.environ.get('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['34.121.90.44', 'localhost']
 
 
 # Application definition
@@ -70,7 +70,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'church_registration.wsgi.application'
-
+# CSRF_COOKIE_SECURE = False
+#SESSION_COOKIE_SECURE = True
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -86,9 +87,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         # The following settings are not used with sqlite3:
-        'NAME': 'contact',
-        'USER': 'root',
-        'PASSWORD': 'codeninja',
+        'NAME': str(os.environ.get('DB_NAME')),
+        'USER': str(os.environ.get('DB_USER_DJANGO')),
+        'PASSWORD': str(os.environ.get('DB_PWD_DJANGO')),
         'HOST': 'localhost',                 # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '3306',  
         'OPTIONS': {
@@ -133,9 +134,13 @@ USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static'),
-]
+#STATICFILES_DIRS = [
+#        os.path.join(BASE_DIR, 'static'),
+#]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
