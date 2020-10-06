@@ -41,7 +41,7 @@ def dashboard(request):
         date__year=today.year, 
         date__month=today.month, 
         date__day=today.day
-    ).order_by("id")
+    ).order_by("id").distinct()
 
     PAGE_LIMIT = 10
     count_of_people = len(people)
