@@ -11,8 +11,8 @@
                             <img class="box-set__knight-image" src="https://storage.googleapis.com/ccbc-contact-tracer-bucket/ccbc-logo.png" alt="logo" />
                         </div>
                         <div class="box-set__header">
-                            <h1>Contact Tracing Form
-                                <span>Calumpit Christian Baptist Church</span>
+                            <h1>QR Generator
+                                <span>Generate QR image to present <strong>this sunday!</strong></span>
                             </h1>
                         </div>
                     </div>
@@ -25,44 +25,26 @@
                 <p class="font-weight-bold" class="text-{{ message.level_tag }}">{{ message }}</p>
                 {% endfor %}
             {% endif %}
-            <form action="{% url 'register' %}" id="register" method="POST" 
+            <form action="{% url 'generate' %}" id="generate" method="POST" 
                 enctype="multipart/form-data" class="needs-validation" novalidate>
             {% csrf_token %}
                 <div class="form-group validate-me">
                     <label for="name">Name:</label>
-                    {% if pre_reg %}
-                    <input type="text" class="form-control" id="name" value="{{ name|default:'' }}" placeholder="Enter name" name="name" required>
-                    {% else %}
                     <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" required>
-                    {% endif %}
                     <div class="valid-feedback"></div>
                     <div class="invalid-feedback">Please fill out this field.</div>
                 </div>
-                <div class="form-group validate-me">
-                    <label for="temp">Temperature (e.g. 36.5, only from 32 to 45):</label>
-                    <input type="number" min=32 max=45 step="0.1" class="form-control" id="temp" placeholder="Enter temp" name="temp" required>
-                    <div class="valid-feedback"></div>
-                    <div class="invalid-feedback">Get proper temp from usher!</div>
-                </div>
                 <div class="form-group">
                     <label for="contact">Contact Number (maximum 11-digit):</label>
-                    {% if pre_reg %}
-                    <input type="text" class="form-control" id="contact" value="{{ contact|default:'' }}" placeholder="Enter contact number" name="contact">
-                    {% else %}
                     <input type="text" class="form-control" id="contact" placeholder="Enter contact number" name="contact">
-                    {% endif %}
                 </div>
-                <div class="form-group">
+                <div class="form-group validate-me">
                     <label for="address">Address:</label>
-                    {% if pre_reg %}
-                    <input type="text" class="form-control" id="address" value="{{ address|default:'' }}" placeholder="Enter address" name="address">
-                    {% else %}
-                    <input type="text" class="form-control" id="address" placeholder="Enter address" name="address">
-                    {% endif %}
-                    
-                    
+                    <input type="text" class="form-control" id="address" placeholder="Enter address" name="address" required>
+                    <div class="valid-feedback"></div>
+                    <div class="invalid-feedback">Please fill out this field.</div>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Generate QR Code</button>
             </form>
         </div>
     </div>
