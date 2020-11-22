@@ -11,6 +11,7 @@ import os
 import urllib
 import re
 from django.http import HttpResponse
+import csv
 
 
 def valid_name(s):
@@ -180,3 +181,27 @@ def dashboard(request):
     }
 
     return render(request, 'dashboard.html', context=context)
+
+def export_to_csv(request):
+    if request.method == 'GET':
+        today = date.today()
+
+        people = Person.objects.filter(
+            date__year=today.year, 
+            date__month=today.month, 
+            date__day=today.day
+        ).order_by("id").distinct()
+
+        filename = 'attendance-' + str(date.today()) + '.csv'
+
+        if people.exists():
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = f"attachment; filename={filename}"
+
+            writer = csv.writer(response)
+            writer.writerow(['Name', 'Temperature', 'Address', 'Contact', 'Date'])
+
+            for person in people:
+                writer.writerow([person.name, person.temp, person.address, person.contact, str(date.today())])
+            return response
+    return redirect('dashboard')
